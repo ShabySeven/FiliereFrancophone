@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Activités Scientifiques - Filière Francophone de Droit</title>
+<style>
+  :root {
+    --color-bg: #faf6f0;
+    --color-text: #3a2a2a;
+    --color-primary: #25427d;
+    --color-accent: #b97448;
+    --color-header-bg: #7a1825;
+    --font-family-main: 'Georgia', serif;
+    --font-family-headings: Arial, sans-serif;
+    --border-radius: 0.75rem;
+    --shadow-light: 0 4px 8px rgba(0,0,0,0.05);
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-family-main);
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    font-size: 17px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    height: 64px;
+    background: var(--color-header-bg);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+    z-index: 1000;
+  }
+
+  header .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #f9f6f2;
+    user-select: none;
+  }
+
+  #container {
+    max-width: 1400px; 
+    margin: 2rem auto 4rem;
+    padding: 0 1rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: flex-start;
+  }
+
+  #tdm {
+    position: sticky;
+    top: 64px;
+    flex: 0 0 260px;
+    background: #f3e6cc;
+    border-radius: var(--border-radius);
+    padding: 2rem 2.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    height: fit-content;
+    max-height: calc(100vh - 64px - 2rem);
+    overflow-y: auto;
+    font-size: 0.9rem;
+    color: #5a3e26;
+    user-select: none;
+    scroll-behavior: smooth;
+    margin-bottom: 1.5rem;
+  }
+
+  #tdm h2 {
+    font-family: var(--font-family-headings);
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  #tdm ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  #tdm ul li {
+    margin-bottom: 1rem;
+  }
+
+  #tdm ul li a {
+    color: #87222f;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  #tdm ul li a:hover,
+  #tdm ul li a:focus {
+    color: var(--color-accent);
+    text-decoration: underline;
+    outline: none;
+  }
+
+  main {
+    flex: 1 1 800px; 
+    background: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: 3rem 3rem 4rem;
+    font-family: var(--font-family-main);
+    color: var(--color-text);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  section {
+    margin-bottom: 3rem;
+  }
+
+  h2 {
+    font-family: var(--font-family-headings);
+    font-weight: 700;
+    font-size: 3rem;
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  p, ul {
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  ul li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
+  }
+
+  figure.image-card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+    width: 180px;
+    height: 130px;
+    background: white;
+    margin: 1rem 0;
+  }
+
+  figure.image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    #container {
+      flex-direction: column;
+      padding: 0 1rem;
+    }
+
+    #tdm {
+      position: static;
+      max-height: none;
+      margin-bottom: 2rem;
+      flex: 1 1 auto;
+      padding: 1rem 1.5rem;
+    }
+
+    main {
+      padding: 2rem 1rem 3rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  #plan-modal,
+  #contact-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    z-index: 1001;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #plan-modal[aria-hidden="false"],
+  #contact-modal[aria-hidden="false"] {
+    display: flex;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: left;
+    font-family: var(--font-family-main);
+    color: var(--color-text);
+    box-shadow: var(--shadow-light);
+    position: relative;
+  }
+
+  #plan-modal h3,
+  #contact-modal h3 {
+    font-family: var(--font-family-headings);
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+    text-align: center;
+  }
+
+  button.close-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-primary);
+    font-weight: 700;
+    line-height: 1;
+    padding: 0;
+  }
+
+  button.close-btn:hover,
+  button.close-btn:focus {
+    color: var(--color-accent);
+    outline: none;
+  }
+
+  #contact-modal button.close-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 0.5rem;
+  }
+
+  #contact-modal button.close-btn:hover {
+    background-color: var(--color-accent);
+  }
+
+  .image-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .image-row {
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+  }
+  #img-modal {
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#img-modal img {
+  border-radius: 8px;
+}
+#img-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+.enlargeable {
+  cursor: zoom-in;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Filière Francophone de Droit - Université Libanaise</div>
+</header>
+<div id="container">
+  <nav id="tdm" aria-label="Table des matières">
+    <h2>Table des matières</h2>
+    <ul>
+      <li><a href="index.html#introduction">Introduction</a></li>
+      <li><a href="etudiant.html#selection-title">Les Étudiants</a></li>
+    </ul>
+  </nav>
+  <main>
+    <section aria-labelledby="activites-title">
+      <h2 id="activites-title">Activités Scientifiques</h2>
+      <p>La Filière collabore avec la Fondation Youssef Sader pour la Culture Juridique, organisant des événements sur la propriété intellectuelle et la technologie juridique.</p>
+      <p>Elle a aussi organisé des conférences avec le soutien de l'AFDAL, du PNUD et de l'Union Européenne sur la législation des marchés publics et la lutte contre la corruption.</p>
+      <p>Les étudiants participent à des événements internationaux tels que le Parlement Francophone des Jeunes et découvrent la justice française à travers des visites culturelles.</p>
+    </section>
+
+    <section class="image-gallery">
+      <div class="image-row">
+        <figure class="image-card">
+          <img src="activite2.PNG" alt="etudiant en classe" loading="lazy" class="enlargeable"/>
+        </figure>
+        <figure class="image-card">
+          <img src="activite6.jpg" alt="etudiants dans une Conférence" loading="lazy" class="enlargeable"/>
+        </figure>
+        <figure class="image-card">
+          <img src="activite3.jpg" alt="prom" loading="lazy" class="enlargeable"/>
+        </figure>
+      </div>
+      <div class="image-row">
+        <figure class="image-card">
+          <img src="activite1.PNG" alt="activites des etudiants" loading="lazy" class="enlargeable"/>
+        </figure>
+        <figure class="image-card">
+          <img src="activite5.jpg" alt="activites des etudiants" loading="lazy" class="enlargeable"/>
+        </figure>
+        <figure class="image-card">
+          <img src="activite4.jpg" alt="activites des etudiants" loading="lazy" class="enlargeable"/>
+        </figure>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="plan-modal" role="dialog" aria-modal="true" aria-labelledby="plan-title" aria-hidden="true">
+  <div class="modal-content" tabindex="0">
+    <button aria-label="Fermer la fenêtre" class="close-btn" id="close-plan-modal">&times;</button>
+    <h3 id="plan-title">Plan D'Étude</h3>
+    <p>Première Année:</p>
+    <ul>
+      <li>Premier Semestre</li>
+      <ul>
+        <li>o Introduction à l’Étude des Relations Internationales (cours facultatif).</li>
+        <li>o Méthodologie et Vocabulaire Juridique.</li>
+        <li>o Histoire du Droit Romain et du Droit Musulman (cours facultatif).</li>
+        <li>o Droit de l’Environnement (cours facultatif).</li>
+        <li>o Institutions et Organisations Judiciaires.</li>
+        <li>o Introduction au Droit Objectif.</li>
+        <li>o Principes Économiques.</li>
+        <li>o Droit Civil : Les Biens.</li>
+        <li>o Droit Constitutionnel Général.</li>
+      </ul>
+      <li>Deuxième Semestre:</li>
+      <ul>
+        <li>o Introductions aux Droits Subjectifs.</li>
+        <li>o Droits de l’Homme.</li>
+        <li>o Introduction à la Science Politique (cours facultatif).</li>
+        <li>o Droit Constitutionnel et Régime Politique Libanais.</li>
+        <li>o Théorie de l’obligation.</li>
+        <li>o Code de la Route et Droit de l’Assurance (cours facultatif).</li>
+        <li>o Droit International Humanitaire et Droits des Réfugiés (cours facultatif).</li>
+        <li>o Droit civil : Les droits réels.</li>
+        <li>o Institutions Politiques et Sociales.</li>
+      </ul>
+    </ul>
+    <p>Deuxième Année:</p>
+    <ul>
+      <li>Premier Semestre:</li>
+      <ul>
+        <li>o Cours facultatif : Droit de la Protection du Consommateur.</li>
+        <li>o Procédure Civile.</li>
+        <li>o Droit Commercial : Actes et Fonds de Commerce.</li>
+        <li>o Règle Pénale et Infraction.</li>
+        <li>o Droit des Obligations : le Contrat.</li>
+        <li>o Cours facultatif : Droit de l’Informatique.</li>
+        <li>o Cours facultatif : Propriété Intellectuelle.</li>
+        <li>o Droit International Public.</li>
+        <li>o Droit Financier.</li>
+      </ul>
+      <li>Deuxième Semestre:</li>
+      <ul>
+        <li>o Responsabilité Pénale et Sanction.</li>
+        <li>o Droit des Statuts Personnels.</li>
+        <li>o Régime Général des Sociétés.</li>
+        <li>o Économie Monétaire (cours facultatif).</li>
+        <li>o Criminalité Économique Internationale (cours facultatif).</li>
+        <li>o Droit Administratif Général.</li>
+        <li>o Droit civil : responsabilité civile.</li>
+        <li>o Organizations Internationales et Régionales.</li>
+        <li>o Cours facultatif : Droit Pétrolier.</li>
+      </ul>
+    </ul>
+    <p>Troisième Année:</p>
+    <ul>
+      <li>Premier Semestre:</li>
+      <ul>
+        <li>o Droit Fiscal.</li>
+        <li>o Droit Administratif Spécial.</li>
+        <li>o Instruments de Paiement et de Crédit.</li>
+        <li>o Cours facultatif : Fonction Publique.</li>
+        <li>o Contrats Spéciaux.</li>
+        <li>o Sociétés Commerciales.</li>
+        <li>o Cours facultatif : Responsabilité Médicale.</li>
+        <li>o Droit Pénal Spécial.</li>
+        <li>o Cours facultatif : Déontologie et Éthique des Professions.</li>
+      </ul>
+      <li>Deuxième Semestre:</li>
+      <ul>
+        <li>o Régimes Fonciers.</li>
+        <li>o Anglais Juridique.</li>
+        <li>o Justice Administrative.</li>
+        <li>o Procédure Pénale.</li>
+        <li>o Droit du Travail et de la Sécurité Sociale.</li>
+        <li>o Droit Bancaire.</li>
+        <li>o Cours facultatif : Contentieux Constitutionnels.</li>
+        <li>o Cours facultatif : Technique Contractuelle.</li>
+        <li>o Cours facultatif : Droit de la Construction et de l’Urbanisme.</li>
+      </ul>
+    </ul>
+  </div>
+</div>
+
+<div id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-title" aria-hidden="true">
+  <div class="modal-content" tabindex="0">
+    <button aria-label="Fermer la fenêtre" class="close-btn" id="close-contact-modal">&times;</button>
+    <h3 id="contact-title">Contact</h3>
+    <p>Email: <a href="mailto:ffd.directeur@ul.edu.lb">ffd.directeur@ul.edu.lb</a></p>
+    <p>Téléphone: 01-856 140</p>
+  </div>
+</div>
+
+<div id="img-modal" style="display:none;">
+  <span id="img-modal-close" style="position:absolute;top:20px;right:40px;font-size:2rem;cursor:pointer;color:white;">&times;</span>
+  <img id="img-modal-content" style="display:block;max-width:90vw;max-height:90vh;margin:auto;box-shadow:0 0 20px #000;">
+</div>
+
+<script>
+  const planLink = document.getElementById('plan-link');
+  const planModal = document.getElementById('plan-modal');
+  const closePlanBtn = document.getElementById('close-plan-modal');
+  const modalPlanContent = planModal.querySelector('.modal-content');
+
+  const contactLink = document.getElementById('contact-link');
+  const contactModal = document.getElementById('contact-modal');
+  const closeContactBtn = document.getElementById('close-contact-modal');
+  const modalContactContent = contactModal.querySelector('.modal-content');
+
+  const floatingButtonsContainer = document.createElement('div');
+  floatingButtonsContainer.style.position = 'fixed';
+  floatingButtonsContainer.style.bottom = '1.5rem';
+  floatingButtonsContainer.style.right = '1.5rem';
+  floatingButtonsContainer.style.display = 'flex';
+  floatingButtonsContainer.style.gap = '1rem';
+  floatingButtonsContainer.style.zIndex = '1100';
+
+  const planBtn = document.createElement('button');
+  planBtn.textContent = 'Plan d\'Étude';
+  planBtn.style.padding = '0.5rem 1rem';
+  planBtn.style.backgroundColor = '#25427d';
+  planBtn.style.color = '#fff';
+  planBtn.style.border = 'none';
+  planBtn.style.borderRadius = '0.5rem';
+  planBtn.style.cursor = 'pointer';
+  planBtn.style.fontWeight = '700';
+  planBtn.style.fontSize = '0.9rem';
+  planBtn.addEventListener('click', () => {
+    planModal.setAttribute('aria-hidden', 'false');
+    modalPlanContent.focus();
+  });
+
+  const contactBtn = document.createElement('button');
+  contactBtn.textContent = 'Contact';
+  contactBtn.style.padding = '0.5rem 1rem';
+  contactBtn.style.backgroundColor = '#b97448';
+  contactBtn.style.color = '#fff';
+  contactBtn.style.border = 'none';
+  contactBtn.style.borderRadius = '0.5rem';
+  contactBtn.style.cursor = 'pointer';
+  contactBtn.style.fontWeight = '700';
+  contactBtn.style.fontSize = '0.9rem';
+  contactBtn.addEventListener('click', () => {
+    contactModal.setAttribute('aria-hidden', 'false');
+    modalContactContent.focus();
+  });
+
+  floatingButtonsContainer.appendChild(planBtn);
+  floatingButtonsContainer.appendChild(contactBtn);
+  document.body.appendChild(floatingButtonsContainer);
+
+  closePlanBtn.addEventListener('click', function() {
+    planModal.setAttribute('aria-hidden', 'true');
+  });
+
+  planModal.addEventListener('click', function(event) {
+    if (event.target === planModal) {
+      planModal.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  closeContactBtn.addEventListener('click', function() {
+    contactModal.setAttribute('aria-hidden', 'true');
+  });
+
+  contactModal.addEventListener('click', function(event) {
+    if (event.target === contactModal) {
+      contactModal.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      if (planModal.getAttribute('aria-hidden') === 'false') {
+        planModal.setAttribute('aria-hidden', 'true');
+      }
+      if (contactModal.getAttribute('aria-hidden') === 'false') {
+        contactModal.setAttribute('aria-hidden', 'true');
+      }
+    }
+  });
+
+  document.querySelectorAll('.enlargeable').forEach(img => {
+  img.addEventListener('click', function() {
+    document.getElementById('img-modal-content').src = this.src;
+    document.getElementById('img-modal').style.display = 'flex';
+  });
+});
+  document.getElementById('img-modal-close').onclick = function() {
+  document.getElementById('img-modal').style.display = 'none';
+};
+document.getElementById('img-modal').onclick = function(e) {
+  if (e.target === this) this.style.display = 'none';
+};
+</script>
+</body>
+</html>
+
